@@ -1,0 +1,33 @@
+# WARP Shoe Problem 
+# table <YourTableNameInAMPL> IN "ODBC" "./<YourAccessFile>" "<TableNameInAccess>"
+#################################################################
+#set product;
+#set rawMat;
+#set machine;
+set stores := 1,2,3,4,5,6,7,8,9,10;
+set yearr := 1997,1998,1999,2000,2001,2002,2003;
+
+table Product_Master IN "ODBC" "\\SRVC\Homes$\lisophi4\Documents\WARP2011W (1).mdb" "Product_Master": 
+	product <- [Product_Num], salesprice ~ Sales_Price; 
+read table Product_Master; 
+
+table Product_Demand IN "ODBC" "\\SRVC\Homes$\lisophi4\Documents\WARP2011W (1).mdb" "Product_Demand" 
+"SQL=SELECT Product_Num,SUM(Demand) AS demanddd FROM Product_Demand WHERE Month = 2 GROUP BY Product_Num":
+	demand <- [Product_Num], demandd ~ demanddd; 
+read table Product_Demand; 
+
+table Machine_Assign IN "ODBC" "\\SRVC\Homes$\lisophi4\Documents\WARP2011W (1).mdb" "Machine_Assign": 
+	[Product_Num,Machine_Num], avgDur ~ Avg_Duration;
+read table Machine_Assign; 
+
+table Machine_Master IN "ODBC" "\\SRVC\Homes$\lisophi4\Documents\WARP2011W (1).mdb" "Machine_Master": 
+	machine <- [Machine_Num], opCost ~ OpCost_per_min;  
+read table Machine_Master; 
+
+table RM_Master IN "ODBC" "\\SRVC\Homes$\lisophi4\Documents\WARP2011W (1).mdb" "RM_Master": 
+	rawMat <- [RM_Num], RMQuan ~ S_Quantity, RMcost ~ Cost; 
+read table RM_Master; 
+
+table BOM IN "ODBC" "\\SRVC\Homes$\lisophi4\Documents\WARP2011W (1).mdb" "BOM": 
+	[Product_Num, RM_Num], quant ~ Quantity; 
+read table BOM; 

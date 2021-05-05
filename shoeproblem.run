@@ -1,0 +1,1419 @@
+reset;
+
+model'\\SRVC\Homes$\lisophi4\Downloads\li_sophi4_WARP (2)\li_sophi4_WARP\li_sophi4_WARP\shoeproblem.mod';
+data  '\\SRVC\Homes$\lisophi4\Downloads\li_sophi4_WARP (2)\li_sophi4_WARP\li_sophi4_WARP\shoeproblem.dat';
+
+option solver 'C:\Program Files\AMPL64\gurobi.exe';
+
+solve;
+#--------------Optimal Obj Value
+printf '(a) Optimal objective value: %.2f\n\n', z >> '\\SRVC\Homes$\lisophi4\Downloads\li_sophi4_WARP (2)\li_sophi4_WARP\li_sophi4_WARP\shoeproblem.run';
+#---------------Optimal x Values
+printf '(b) Optimal x values: \n\n' >> '\\SRVC\Homes$\lisophi4\Downloads\li_sophi4_WARP (2)\li_sophi4_WARP\li_sophi4_WARP\shoeproblem.run';
+display x >> '\\SRVC\Homes$\lisophi4\Downloads\li_sophi4_WARP (2)\li_sophi4_WARP\li_sophi4_WARP\shoeproblem.run';
+#---------------Binding Constraints
+printf '(c) Binding constraints: \n\n' >> '\\SRVC\Homes$\lisophi4\Downloads\li_sophi4_WARP (2)\li_sophi4_WARP\li_sophi4_WARP\shoeproblem.run';
+for{i in product}{
+	if maxDuration[i].slack < 1e-6 then 
+		printf '\tmaxDuration[%s]\n', i >> '\\SRVC\Homes$\lisophi4\Downloads\li_sophi4_WARP (2)\li_sophi4_WARP\li_sophi4_WARP\shoeproblem.run';
+}
+
+for{i in product}{
+	if  maxProd[i].slack < 1e-6 then 
+	printf '\tmaxProd[%s]\n', i >> '\\SRVC\Homes$\lisophi4\Downloads\li_sophi4_WARP (2)\li_sophi4_WARP\li_sophi4_WARP\shoeproblem.run';
+}
+
+for{i in product} {
+	if  maxDemand[i].slack < 1e-6 then 
+	printf '\tmaxDemand[%s]\n', i >> '\\SRVC\Homes$\lisophi4\Downloads\li_sophi4_WARP (2)\li_sophi4_WARP\li_sophi4_WARP\shoeproblem.run';
+}
+
+for {i in product} {
+	if budgetRawMat[i].slack < 1e-6 then 
+	printf '\tbudgetRawMat[%s]\n', i >> '\\SRVC\Homes$\lisophi4\Downloads\li_sophi4_WARP (2)\li_sophi4_WARP\li_sophi4_WARP\shoeproblem.run';
+}
+#---------------Slack Values
+printf '(d) The slack for raw materials budget is: \n\n' >> '\\SRVC\Homes$\lisophi4\Downloads\li_sophi4_WARP (2)\li_sophi4_WARP\li_sophi4_WARP\shoeproblem.run';
+display budgetRawMat.slack >> '\\SRVC\Homes$\lisophi4\Documents\WARPshoeproblem\shoeproblem.out';
+
+printf '(e) The slack for max duration is: \n\n'>>'\\SRVC\Homes$\lisophi4\Downloads\li_sophi4_WARP (2)\li_sophi4_WARP\li_sophi4_WARP\shoeproblem.run';
+display maxDuration.slack >> '\\SRVC\Homes$\lisophi4\Downloads\li_sophi4_WARP (2)\li_sophi4_WARP\li_sophi4_WARP\shoeproblem.run';
+
+printf '(f) The slack for max production is: \n\n'>>'\\SRVC\Homes$\lisophi4\Downloads\li_sophi4_WARP (2)\li_sophi4_WARP\li_sophi4_WARP\shoeproblem.run';
+display maxProd.slack >> '\\SRVC\Homes$\lisophi4\Downloads\li_sophi4_WARP (2)\li_sophi4_WARP\li_sophi4_WARP\shoeproblem.run';
+
+printf '(g) The slack for max demand is: \n\n'>>'\\SRVC\Homes$\lisophi4\Downloads\li_sophi4_WARP (2)\li_sophi4_WARP\li_sophi4_WARP\shoeproblem.run';
+display maxDemand.slack >> '\\SRVC\Homes$\lisophi4\Downloads\li_sophi4_WARP (2)\li_sophi4_WARP\li_sophi4_WARP\shoeproblem.run';
+#------ Shadow Prices
+printf 'h) Shadow prices:\n' >>'\\SRVC\Homes$\lisophi4\Documents\WARPshoeproblem\shoeproblem.out';
+for{i in product}{
+		printf '\tmaxDuration[%s]= %.3lf\n', i, maxDuration[i].dual >> '\\SRVC\Homes$\lisophi4\Downloads\li_sophi4_WARP (2)\li_sophi4_WARP\li_sophi4_WARP\shoeproblem.run';
+}
+for{i in product}{
+	printf '\tbudgetRawMat[%s]= %.3lf\n', i, budgetRawMat[i].dual >> '\\SRVC\Homes$\lisophi4\Downloads\li_sophi4_WARP (2)\li_sophi4_WARP\li_sophi4_WARP\shoeproblem.run';
+}
+for{i in product}{
+	printf '\tmaxDemand[%s]= %.3lf\n', i, maxDemand[i].dual >> '\\SRVC\Homes$\lisophi4\Downloads\li_sophi4_WARP (2)\li_sophi4_WARP\li_sophi4_WARP\shoeproblem.run';
+}
+for{i in product}{
+		printf '\tmaxProd[%s]= %.3lf\n', i, maxProd[i].dual >> '\\SRVC\Homes$\lisophi4\Downloads\li_sophi4_WARP (2)\li_sophi4_WARP\li_sophi4_WARP\shoeproblem.run';
+}(a) Optimal objective value: 18555382.32
+
+(b) Optimal x values: 
+
+x [*] :=
+SH001 252.027   SH113 187.07    SH225 192.205   SH337 234.63    SH449 196.105
+SH002 194.411   SH114 225.023   SH226 195.821   SH338 207.343   SH450 277.385
+SH003 266.963   SH115 198.539   SH227 218.469   SH339 263.849   SH451 182.958
+SH004 213.07    SH116 272.298   SH228 261.628   SH340 183.642   SH452 240.441
+SH005 235.307   SH117 204.652   SH229 223.556   SH341 225.047   SH453 179.925
+SH006 263.014   SH118 236.959   SH230 257.957   SH342 197.116   SH454 320
+SH007 237.389   SH119 261.596   SH231 318.021   SH343 219.49    SH455 203.908
+SH008 260.917   SH120 251.572   SH232 219.579   SH344 285.563   SH456 190.956
+SH009 189.99    SH121 169.359   SH233 193.315   SH345 173.431   SH457 201.624
+SH010 231.648   SH122 277.03    SH234 163.148   SH346 247.069   SH458 195.901
+SH011 216.379   SH123 348.078   SH235 183.908   SH347 224.311   SH459 224.567
+SH012 217.479   SH124 306.253   SH236 214.776   SH348 176.637   SH460 305.646
+SH013 174.257   SH125 251.28    SH237 233.842   SH349 179.97    SH461 226.308
+SH014 244.192   SH126 196.694   SH238 228.886   SH350 205.793   SH462 215.182
+SH015 204.371   SH127 216.606   SH239 225.953   SH351 246.14    SH463 259.055
+SH016 221.209   SH128 210.526   SH240 215.709   SH352 188.927   SH464 188.383
+SH017 224.101   SH129 230.044   SH241 221.641   SH353 205.138   SH465 210.107
+SH018 212.787   SH130 190.897   SH242 240.682   SH354 221.629   SH466 169.718
+SH019 215.354   SH131 199.575   SH243 239.96    SH355 272.023   SH467 205.362
+SH020 225.282   SH132 235.937   SH244 223.915   SH356 241.125   SH468 236.557
+SH021 229.702   SH133 253.016   SH245 209.475   SH357 264.787   SH469 225.847
+SH022 284.042   SH134 195.927   SH246 336.632   SH358 219.747   SH470 205.499
+SH023 333.025   SH135 219.791   SH247 192.137   SH359 239.15    SH471 181.087
+SH024 204.526   SH136 303.712   SH248 217.995   SH360 292.822   SH472 204.139
+SH025 214.851   SH137 226.558   SH249 197.17    SH361 242.615   SH473 184.655
+SH026 238.148   SH138 221.994   SH250 237.781   SH362 200.037   SH474 219.691
+SH027 165.701   SH139 235.166   SH251 226.048   SH363 211.537   SH475 212.17
+SH028 231.177   SH140 242.492   SH252 195.741   SH364 258.265   SH476 200.083
+SH029 225.823   SH141 275.019   SH253 167.04    SH365 206.235   SH477 200.436
+SH030 255.078   SH142 219.568   SH254 233.627   SH366 181.459   SH478 227.56
+SH031 200.93    SH143 246.505   SH255 172.959   SH367 235.41    SH479 195.413
+SH032 195.113   SH144 188.77    SH256 224.766   SH368 318.984   SH480 215.601
+SH033 255.712   SH145 308.947   SH257 262.375   SH369 209.414   SH481 212.233
+SH034 177.741   SH146 178.424   SH258 194.524   SH370 287.368   SH482 201.521
+SH035 212.139   SH147 206.986   SH259 234.464   SH371 205.148   SH483 174.722
+SH036 236.259   SH148 235.358   SH260 226.344   SH372 194.647   SH484 306.884
+SH037 292.862   SH149 212.923   SH261 213.586   SH373 210.557   SH485 192.642
+SH038 174.778   SH150 176.774   SH262 172.297   SH374 256.243   SH486 266.42
+SH039 244.718   SH151 297.316   SH263 182.811   SH375 229.385   SH487 197.748
+SH040 187.346   SH152 220.06    SH264 259.584   SH376 247.607   SH488 283.334
+SH041 190.88    SH153 192.685   SH265 181.558   SH377 199.612   SH489 195.954
+SH042 235.358   SH154 195.803   SH266 258.481   SH378 153.496   SH490 181.071
+SH043 197.098   SH155 252.145   SH267 214.477   SH379 199.557   SH491 198.365
+SH044 208.817   SH156 294.098   SH268 302.457   SH380 326.506   SH492 192.659
+SH045 255.621   SH157 255.954   SH269 217.523   SH381 202.257   SH493 220.06
+SH046 215.365   SH158 308.197   SH270 213.872   SH382 280.447   SH494 222.371
+SH047 236.933   SH159 238.279   SH271 228.366   SH383 180.67    SH495 206.186
+SH048 205.479   SH160 298.569   SH272 234.63    SH384 180.323   SH496 245.468
+SH049 243.614   SH161 268.74    SH273 207.274   SH385 270       SH497 198.374
+SH050 181.612   SH162 234.426   SH274 235.654   SH386 257.664   SH498 194.035
+SH051 299.667   SH163 251.969   SH275 275.651   SH387 260.492   SH499 219.245
+SH052 247.877   SH164 264.819   SH276 258.993   SH388 246.238   SH500 183.736
+SH053 266.551   SH165 224.696   SH277 204.429   SH389 210.127   SH501 178.793
+SH054 282.205   SH166 219.959   SH278 213.798   SH390 233.463   SH502 341.691
+SH055 222.577   SH167 233.035   SH279 246.168   SH391 194.551   SH503 202.304
+SH056 253.417   SH168 182.71    SH280 252.646   SH392 241.004   SH504 272.126
+SH057 207.892   SH169 255.395   SH281 197.423   SH393 255.078   SH505 257.71
+SH058 201.361   SH170 217.995   SH282 220.083   SH394 185.09    SH506 220.374
+SH059 233.931   SH171 258.111   SH283 297.582   SH395 193.679   SH507 255.425
+SH060 222.302   SH172 215.87    SH284 210.393   SH396 209.627   SH508 204.284
+SH061 186.063   SH173 191.94    SH285 241.53    SH397 216.195   SH509 277.172
+SH062 204.014   SH174 280.337   SH286 183.541   SH398 230.843   SH510 311.801
+SH063 201.568   SH175 248.205   SH287 215.795   SH399 186.722   SH511 191.966
+SH064 213.936   SH176 199.483   SH288 250.58    SH400 252.336   SH512 251.192
+SH065 222.991   SH177 225.411   SH289 228.862   SH401 249.812   SH513 233.766
+SH066 180.331   SH178 204.323   SH290 203.208   SH402 251.924   SH514 168.948
+SH067 256.046   SH179 202.437   SH291 198.42    SH403 259.459   SH515 239.123
+SH068 323.984   SH180 252.395   SH292 268.323   SH404 240.427   SH516 198.393
+SH069 276.374   SH181 254.522   SH293 216.802   SH405 285.582   SH517 333.282
+SH070 210.876   SH182 315.213   SH294 249.812   SH406 222.291   SH518 237.885
+SH071 176.702   SH183 236.492   SH295 221.652   SH407 206.254   SH519 230.621
+SH072 273.176   SH184 232.959   SH296 247.041   SH408 227.788   SH520 229.751
+SH073 230.658   SH185 208.173   SH297 190.897   SH409 223.129   SH521 175.753
+SH074 209.009   SH186 223.002   SH298 233.387   SH410 192.248   SH522 257.818
+SH075 251.017   SH187 221.732   SH299 244.579   SH411 196.257   SH523 225.176
+SH076 216.324   SH188 190.091   SH300 193.687   SH412 219.412   SH524 220.633
+SH077 231.338   SH189 232.046   SH301 256.425   SH413 304.504   SH525 184.355
+SH078 192.668   SH190 223.233   SH302 237.82    SH414 238.161   SH526 260.1
+SH079 188.679   SH191 236.389   SH303 264.755   SH415 225.317   SH527 289.661
+SH080 197.847   SH192 219.97    SH304 237.467   SH416 229.446   SH528 339.223
+SH081 211.051   SH193 261.454   SH305 242.915   SH417 185.727   SH529 194.463
+SH082 201.333   SH194 240.816   SH306 282.408   SH418 195.626   SH530 246.744
+SH083 228.221   SH195 186.843   SH307 257.327   SH419 216.802   SH531 261.993
+SH084 212.871   SH196 257.403   SH308 202.361   SH420 235.448   SH532 212.494
+SH085 236.596   SH197 167.131   SH309 225.918   SH421 187.565   SH533 247.324
+SH086 306.122   SH198 236.751   SH310 238.753   SH422 261.09    SH534 200.25
+SH087 203.237   SH199 202.931   SH311 261.929   SH423 205.44    SH535 180.481
+SH088 175.296   SH200 246.533   SH312 206.274   SH424 218.292   SH536 222.566
+SH089 217.841   SH201 200.408   SH313 178.535   SH425 191.074   SH537 216.596
+SH090 183.533   SH202 206.048   SH314 184.049   SH426 217.413   SH538 253.239
+SH091 249.207   SH203 181.987   SH315 233.943   SH427 188.391   SH539 253.402
+SH092 206.068   SH204 261.977   SH316 192.978   SH428 228.029   SH540 211.537
+SH093 201.69    SH205 184.718   SH317 207.513   SH429 230.314   SH541 235.025
+SH094 187.248   SH206 222.165   SH318 224.486   SH430 196.373   SH542 213.957
+SH095 196.283   SH207 244.898   SH319 258.435   SH431 290.401   SH543 220.172
+SH096 188.952   SH208 238.674   SH320 186.079   SH432 220.769   SH544 244.704
+SH097 293.678   SH209 202.57    SH321 253.983   SH433 267.476   SH545 254.567
+SH098 218.182   SH210 191.932   SH322 218.978   SH434 223.73    SH546 202.181
+SH099 262.63    SH211 252.883   SH323 278.764   SH435 238.872   SH547 200.968
+SH100 254.822   SH212 268.306   SH324 228.065   SH436 262.822   SH548 227.704
+SH101 254.762   SH213 169.831   SH325 180.195   SH437 209.556   SH549 189.092
+SH102 228.318   SH214 210.188   SH326 183.517   SH438 228.137   SH550 306.166
+SH103 258.25    SH215 307.539   SH327 302.33    SH439 263.913   SH551 244.801
+SH104 266.848   SH216 257.91    SH328 195.228   SH440 292.03    SH552 207.742
+SH105 190.737   SH217 284.136   SH329 242.017   SH441 330.503   SH553 218.867
+SH106 215.903   SH218 292.208   SH330 241.058   SH442 215.461   SH554 234.515
+SH107 196.025   SH219 231.673   SH331 209.79    SH443 240.991   SH555 242.411
+SH108 206.926   SH220 236.842   SH332 222.749   SH444 216.846   SH556 203.352
+SH109 219.456   SH221 193.878   SH333 246.603   SH445 195.546   SH557 192.565
+SH110 223.51    SH222 217.195   SH334 157.693   SH446 246.168
+SH111 315.997   SH223 195.484   SH335 232.421   SH447 187.573
+SH112 274.687   SH224 196.766   SH336 229.336   SH448 255.093
+;
+
+(c) Binding constraints: 
+
+	maxDuration[SH001]
+	maxDuration[SH002]
+	maxDuration[SH003]
+	maxDuration[SH004]
+	maxDuration[SH005]
+	maxDuration[SH006]
+	maxDuration[SH007]
+	maxDuration[SH008]
+	maxDuration[SH009]
+	maxDuration[SH010]
+	maxDuration[SH011]
+	maxDuration[SH012]
+	maxDuration[SH013]
+	maxDuration[SH014]
+	maxDuration[SH015]
+	maxDuration[SH016]
+	maxDuration[SH017]
+	maxDuration[SH018]
+	maxDuration[SH019]
+	maxDuration[SH020]
+	maxDuration[SH021]
+	maxDuration[SH022]
+	maxDuration[SH023]
+	maxDuration[SH024]
+	maxDuration[SH025]
+	maxDuration[SH026]
+	maxDuration[SH027]
+	maxDuration[SH028]
+	maxDuration[SH029]
+	maxDuration[SH030]
+	maxDuration[SH031]
+	maxDuration[SH032]
+	maxDuration[SH033]
+	maxDuration[SH034]
+	maxDuration[SH035]
+	maxDuration[SH036]
+	maxDuration[SH037]
+	maxDuration[SH038]
+	maxDuration[SH039]
+	maxDuration[SH040]
+	maxDuration[SH041]
+	maxDuration[SH042]
+	maxDuration[SH043]
+	maxDuration[SH044]
+	maxDuration[SH045]
+	maxDuration[SH046]
+	maxDuration[SH047]
+	maxDuration[SH048]
+	maxDuration[SH049]
+	maxDuration[SH050]
+	maxDuration[SH051]
+	maxDuration[SH052]
+	maxDuration[SH053]
+	maxDuration[SH054]
+	maxDuration[SH055]
+	maxDuration[SH056]
+	maxDuration[SH057]
+	maxDuration[SH058]
+	maxDuration[SH059]
+	maxDuration[SH060]
+	maxDuration[SH061]
+	maxDuration[SH062]
+	maxDuration[SH063]
+	maxDuration[SH064]
+	maxDuration[SH065]
+	maxDuration[SH066]
+	maxDuration[SH067]
+	maxDuration[SH068]
+	maxDuration[SH069]
+	maxDuration[SH070]
+	maxDuration[SH071]
+	maxDuration[SH072]
+	maxDuration[SH073]
+	maxDuration[SH074]
+	maxDuration[SH075]
+	maxDuration[SH076]
+	maxDuration[SH077]
+	maxDuration[SH078]
+	maxDuration[SH079]
+	maxDuration[SH080]
+	maxDuration[SH081]
+	maxDuration[SH082]
+	maxDuration[SH083]
+	maxDuration[SH084]
+	maxDuration[SH085]
+	maxDuration[SH086]
+	maxDuration[SH087]
+	maxDuration[SH088]
+	maxDuration[SH089]
+	maxDuration[SH090]
+	maxDuration[SH091]
+	maxDuration[SH092]
+	maxDuration[SH093]
+	maxDuration[SH094]
+	maxDuration[SH095]
+	maxDuration[SH096]
+	maxDuration[SH097]
+	maxDuration[SH098]
+	maxDuration[SH099]
+	maxDuration[SH100]
+	maxDuration[SH101]
+	maxDuration[SH102]
+	maxDuration[SH103]
+	maxDuration[SH104]
+	maxDuration[SH105]
+	maxDuration[SH106]
+	maxDuration[SH107]
+	maxDuration[SH108]
+	maxDuration[SH109]
+	maxDuration[SH110]
+	maxDuration[SH111]
+	maxDuration[SH112]
+	maxDuration[SH113]
+	maxDuration[SH114]
+	maxDuration[SH115]
+	maxDuration[SH116]
+	maxDuration[SH117]
+	maxDuration[SH118]
+	maxDuration[SH119]
+	maxDuration[SH120]
+	maxDuration[SH121]
+	maxDuration[SH122]
+	maxDuration[SH123]
+	maxDuration[SH124]
+	maxDuration[SH125]
+	maxDuration[SH126]
+	maxDuration[SH127]
+	maxDuration[SH128]
+	maxDuration[SH129]
+	maxDuration[SH130]
+	maxDuration[SH131]
+	maxDuration[SH132]
+	maxDuration[SH133]
+	maxDuration[SH134]
+	maxDuration[SH135]
+	maxDuration[SH136]
+	maxDuration[SH137]
+	maxDuration[SH138]
+	maxDuration[SH139]
+	maxDuration[SH140]
+	maxDuration[SH141]
+	maxDuration[SH142]
+	maxDuration[SH143]
+	maxDuration[SH144]
+	maxDuration[SH145]
+	maxDuration[SH146]
+	maxDuration[SH147]
+	maxDuration[SH148]
+	maxDuration[SH149]
+	maxDuration[SH150]
+	maxDuration[SH151]
+	maxDuration[SH152]
+	maxDuration[SH153]
+	maxDuration[SH154]
+	maxDuration[SH155]
+	maxDuration[SH156]
+	maxDuration[SH157]
+	maxDuration[SH158]
+	maxDuration[SH159]
+	maxDuration[SH160]
+	maxDuration[SH161]
+	maxDuration[SH162]
+	maxDuration[SH163]
+	maxDuration[SH164]
+	maxDuration[SH165]
+	maxDuration[SH166]
+	maxDuration[SH167]
+	maxDuration[SH168]
+	maxDuration[SH169]
+	maxDuration[SH170]
+	maxDuration[SH171]
+	maxDuration[SH172]
+	maxDuration[SH173]
+	maxDuration[SH174]
+	maxDuration[SH175]
+	maxDuration[SH176]
+	maxDuration[SH177]
+	maxDuration[SH178]
+	maxDuration[SH179]
+	maxDuration[SH180]
+	maxDuration[SH181]
+	maxDuration[SH182]
+	maxDuration[SH183]
+	maxDuration[SH184]
+	maxDuration[SH185]
+	maxDuration[SH186]
+	maxDuration[SH187]
+	maxDuration[SH188]
+	maxDuration[SH189]
+	maxDuration[SH190]
+	maxDuration[SH191]
+	maxDuration[SH192]
+	maxDuration[SH193]
+	maxDuration[SH194]
+	maxDuration[SH195]
+	maxDuration[SH196]
+	maxDuration[SH197]
+	maxDuration[SH198]
+	maxDuration[SH199]
+	maxDuration[SH200]
+	maxDuration[SH201]
+	maxDuration[SH202]
+	maxDuration[SH203]
+	maxDuration[SH204]
+	maxDuration[SH205]
+	maxDuration[SH206]
+	maxDuration[SH207]
+	maxDuration[SH208]
+	maxDuration[SH209]
+	maxDuration[SH210]
+	maxDuration[SH211]
+	maxDuration[SH212]
+	maxDuration[SH213]
+	maxDuration[SH214]
+	maxDuration[SH215]
+	maxDuration[SH216]
+	maxDuration[SH217]
+	maxDuration[SH218]
+	maxDuration[SH219]
+	maxDuration[SH220]
+	maxDuration[SH221]
+	maxDuration[SH222]
+	maxDuration[SH223]
+	maxDuration[SH224]
+	maxDuration[SH225]
+	maxDuration[SH226]
+	maxDuration[SH227]
+	maxDuration[SH228]
+	maxDuration[SH229]
+	maxDuration[SH230]
+	maxDuration[SH231]
+	maxDuration[SH232]
+	maxDuration[SH233]
+	maxDuration[SH234]
+	maxDuration[SH235]
+	maxDuration[SH236]
+	maxDuration[SH237]
+	maxDuration[SH238]
+	maxDuration[SH239]
+	maxDuration[SH240]
+	maxDuration[SH241]
+	maxDuration[SH242]
+	maxDuration[SH243]
+	maxDuration[SH244]
+	maxDuration[SH245]
+	maxDuration[SH246]
+	maxDuration[SH247]
+	maxDuration[SH248]
+	maxDuration[SH249]
+	maxDuration[SH250]
+	maxDuration[SH251]
+	maxDuration[SH252]
+	maxDuration[SH253]
+	maxDuration[SH254]
+	maxDuration[SH255]
+	maxDuration[SH256]
+	maxDuration[SH257]
+	maxDuration[SH258]
+	maxDuration[SH259]
+	maxDuration[SH260]
+	maxDuration[SH261]
+	maxDuration[SH262]
+	maxDuration[SH263]
+	maxDuration[SH264]
+	maxDuration[SH265]
+	maxDuration[SH266]
+	maxDuration[SH267]
+	maxDuration[SH268]
+	maxDuration[SH269]
+	maxDuration[SH270]
+	maxDuration[SH271]
+	maxDuration[SH272]
+	maxDuration[SH273]
+	maxDuration[SH274]
+	maxDuration[SH275]
+	maxDuration[SH276]
+	maxDuration[SH277]
+	maxDuration[SH278]
+	maxDuration[SH279]
+	maxDuration[SH280]
+	maxDuration[SH281]
+	maxDuration[SH282]
+	maxDuration[SH283]
+	maxDuration[SH284]
+	maxDuration[SH285]
+	maxDuration[SH286]
+	maxDuration[SH287]
+	maxDuration[SH288]
+	maxDuration[SH289]
+	maxDuration[SH290]
+	maxDuration[SH291]
+	maxDuration[SH292]
+	maxDuration[SH293]
+	maxDuration[SH294]
+	maxDuration[SH295]
+	maxDuration[SH296]
+	maxDuration[SH297]
+	maxDuration[SH298]
+	maxDuration[SH299]
+	maxDuration[SH300]
+	maxDuration[SH301]
+	maxDuration[SH302]
+	maxDuration[SH303]
+	maxDuration[SH304]
+	maxDuration[SH305]
+	maxDuration[SH306]
+	maxDuration[SH307]
+	maxDuration[SH308]
+	maxDuration[SH309]
+	maxDuration[SH310]
+	maxDuration[SH311]
+	maxDuration[SH312]
+	maxDuration[SH313]
+	maxDuration[SH314]
+	maxDuration[SH315]
+	maxDuration[SH316]
+	maxDuration[SH317]
+	maxDuration[SH318]
+	maxDuration[SH319]
+	maxDuration[SH320]
+	maxDuration[SH321]
+	maxDuration[SH322]
+	maxDuration[SH323]
+	maxDuration[SH324]
+	maxDuration[SH325]
+	maxDuration[SH326]
+	maxDuration[SH327]
+	maxDuration[SH328]
+	maxDuration[SH329]
+	maxDuration[SH330]
+	maxDuration[SH331]
+	maxDuration[SH332]
+	maxDuration[SH333]
+	maxDuration[SH334]
+	maxDuration[SH335]
+	maxDuration[SH336]
+	maxDuration[SH337]
+	maxDuration[SH338]
+	maxDuration[SH339]
+	maxDuration[SH340]
+	maxDuration[SH341]
+	maxDuration[SH342]
+	maxDuration[SH343]
+	maxDuration[SH344]
+	maxDuration[SH345]
+	maxDuration[SH346]
+	maxDuration[SH347]
+	maxDuration[SH348]
+	maxDuration[SH349]
+	maxDuration[SH350]
+	maxDuration[SH351]
+	maxDuration[SH352]
+	maxDuration[SH353]
+	maxDuration[SH354]
+	maxDuration[SH355]
+	maxDuration[SH356]
+	maxDuration[SH357]
+	maxDuration[SH358]
+	maxDuration[SH359]
+	maxDuration[SH360]
+	maxDuration[SH361]
+	maxDuration[SH362]
+	maxDuration[SH363]
+	maxDuration[SH364]
+	maxDuration[SH365]
+	maxDuration[SH366]
+	maxDuration[SH367]
+	maxDuration[SH368]
+	maxDuration[SH369]
+	maxDuration[SH370]
+	maxDuration[SH371]
+	maxDuration[SH372]
+	maxDuration[SH373]
+	maxDuration[SH374]
+	maxDuration[SH375]
+	maxDuration[SH376]
+	maxDuration[SH377]
+	maxDuration[SH378]
+	maxDuration[SH379]
+	maxDuration[SH380]
+	maxDuration[SH381]
+	maxDuration[SH382]
+	maxDuration[SH383]
+	maxDuration[SH384]
+	maxDuration[SH385]
+	maxDuration[SH386]
+	maxDuration[SH387]
+	maxDuration[SH388]
+	maxDuration[SH389]
+	maxDuration[SH390]
+	maxDuration[SH391]
+	maxDuration[SH392]
+	maxDuration[SH393]
+	maxDuration[SH394]
+	maxDuration[SH395]
+	maxDuration[SH396]
+	maxDuration[SH397]
+	maxDuration[SH398]
+	maxDuration[SH399]
+	maxDuration[SH400]
+	maxDuration[SH401]
+	maxDuration[SH402]
+	maxDuration[SH403]
+	maxDuration[SH404]
+	maxDuration[SH405]
+	maxDuration[SH406]
+	maxDuration[SH407]
+	maxDuration[SH408]
+	maxDuration[SH409]
+	maxDuration[SH410]
+	maxDuration[SH411]
+	maxDuration[SH412]
+	maxDuration[SH413]
+	maxDuration[SH414]
+	maxDuration[SH415]
+	maxDuration[SH416]
+	maxDuration[SH417]
+	maxDuration[SH418]
+	maxDuration[SH419]
+	maxDuration[SH420]
+	maxDuration[SH421]
+	maxDuration[SH422]
+	maxDuration[SH423]
+	maxDuration[SH424]
+	maxDuration[SH425]
+	maxDuration[SH426]
+	maxDuration[SH427]
+	maxDuration[SH428]
+	maxDuration[SH429]
+	maxDuration[SH430]
+	maxDuration[SH431]
+	maxDuration[SH432]
+	maxDuration[SH433]
+	maxDuration[SH434]
+	maxDuration[SH435]
+	maxDuration[SH436]
+	maxDuration[SH437]
+	maxDuration[SH438]
+	maxDuration[SH439]
+	maxDuration[SH440]
+	maxDuration[SH441]
+	maxDuration[SH442]
+	maxDuration[SH443]
+	maxDuration[SH444]
+	maxDuration[SH445]
+	maxDuration[SH446]
+	maxDuration[SH447]
+	maxDuration[SH448]
+	maxDuration[SH449]
+	maxDuration[SH450]
+	maxDuration[SH451]
+	maxDuration[SH452]
+	maxDuration[SH453]
+	maxDuration[SH454]
+	maxDuration[SH455]
+	maxDuration[SH456]
+	maxDuration[SH457]
+	maxDuration[SH458]
+	maxDuration[SH459]
+	maxDuration[SH460]
+	maxDuration[SH461]
+	maxDuration[SH462]
+	maxDuration[SH463]
+	maxDuration[SH464]
+	maxDuration[SH465]
+	maxDuration[SH466]
+	maxDuration[SH467]
+	maxDuration[SH468]
+	maxDuration[SH469]
+	maxDuration[SH470]
+	maxDuration[SH471]
+	maxDuration[SH472]
+	maxDuration[SH473]
+	maxDuration[SH474]
+	maxDuration[SH475]
+	maxDuration[SH476]
+	maxDuration[SH477]
+	maxDuration[SH478]
+	maxDuration[SH479]
+	maxDuration[SH480]
+	maxDuration[SH481]
+	maxDuration[SH482]
+	maxDuration[SH483]
+	maxDuration[SH484]
+	maxDuration[SH485]
+	maxDuration[SH486]
+	maxDuration[SH487]
+	maxDuration[SH488]
+	maxDuration[SH489]
+	maxDuration[SH490]
+	maxDuration[SH491]
+	maxDuration[SH492]
+	maxDuration[SH493]
+	maxDuration[SH494]
+	maxDuration[SH495]
+	maxDuration[SH496]
+	maxDuration[SH497]
+	maxDuration[SH498]
+	maxDuration[SH499]
+	maxDuration[SH500]
+	maxDuration[SH501]
+	maxDuration[SH502]
+	maxDuration[SH503]
+	maxDuration[SH504]
+	maxDuration[SH505]
+	maxDuration[SH506]
+	maxDuration[SH507]
+	maxDuration[SH508]
+	maxDuration[SH509]
+	maxDuration[SH510]
+	maxDuration[SH511]
+	maxDuration[SH512]
+	maxDuration[SH513]
+	maxDuration[SH514]
+	maxDuration[SH515]
+	maxDuration[SH516]
+	maxDuration[SH517]
+	maxDuration[SH518]
+	maxDuration[SH519]
+	maxDuration[SH520]
+	maxDuration[SH521]
+	maxDuration[SH522]
+	maxDuration[SH523]
+	maxDuration[SH524]
+	maxDuration[SH525]
+	maxDuration[SH526]
+	maxDuration[SH527]
+	maxDuration[SH528]
+	maxDuration[SH529]
+	maxDuration[SH530]
+	maxDuration[SH531]
+	maxDuration[SH532]
+	maxDuration[SH533]
+	maxDuration[SH534]
+	maxDuration[SH535]
+	maxDuration[SH536]
+	maxDuration[SH537]
+	maxDuration[SH538]
+	maxDuration[SH539]
+	maxDuration[SH540]
+	maxDuration[SH541]
+	maxDuration[SH542]
+	maxDuration[SH543]
+	maxDuration[SH544]
+	maxDuration[SH545]
+	maxDuration[SH546]
+	maxDuration[SH547]
+	maxDuration[SH548]
+	maxDuration[SH549]
+	maxDuration[SH550]
+	maxDuration[SH551]
+	maxDuration[SH552]
+	maxDuration[SH553]
+	maxDuration[SH554]
+	maxDuration[SH555]
+	maxDuration[SH556]
+	maxDuration[SH557]
+(d) The slack for raw materials budget is: 
+
+(a) Optimal objective value: 18555382.32
+
+(b) Optimal x values: 
+
+x [*] :=
+SH001 252.027   SH113 187.07    SH225 192.205   SH337 234.63    SH449 196.105
+SH002 194.411   SH114 225.023   SH226 195.821   SH338 207.343   SH450 277.385
+SH003 266.963   SH115 198.539   SH227 218.469   SH339 263.849   SH451 182.958
+SH004 213.07    SH116 272.298   SH228 261.628   SH340 183.642   SH452 240.441
+SH005 235.307   SH117 204.652   SH229 223.556   SH341 225.047   SH453 179.925
+SH006 263.014   SH118 236.959   SH230 257.957   SH342 197.116   SH454 320
+SH007 237.389   SH119 261.596   SH231 318.021   SH343 219.49    SH455 203.908
+SH008 260.917   SH120 251.572   SH232 219.579   SH344 285.563   SH456 190.956
+SH009 189.99    SH121 169.359   SH233 193.315   SH345 173.431   SH457 201.624
+SH010 231.648   SH122 277.03    SH234 163.148   SH346 247.069   SH458 195.901
+SH011 216.379   SH123 348.078   SH235 183.908   SH347 224.311   SH459 224.567
+SH012 217.479   SH124 306.253   SH236 214.776   SH348 176.637   SH460 305.646
+SH013 174.257   SH125 251.28    SH237 233.842   SH349 179.97    SH461 226.308
+SH014 244.192   SH126 196.694   SH238 228.886   SH350 205.793   SH462 215.182
+SH015 204.371   SH127 216.606   SH239 225.953   SH351 246.14    SH463 259.055
+SH016 221.209   SH128 210.526   SH240 215.709   SH352 188.927   SH464 188.383
+SH017 224.101   SH129 230.044   SH241 221.641   SH353 205.138   SH465 210.107
+SH018 212.787   SH130 190.897   SH242 240.682   SH354 221.629   SH466 169.718
+SH019 215.354   SH131 199.575   SH243 239.96    SH355 272.023   SH467 205.362
+SH020 225.282   SH132 235.937   SH244 223.915   SH356 241.125   SH468 236.557
+SH021 229.702   SH133 253.016   SH245 209.475   SH357 264.787   SH469 225.847
+SH022 284.042   SH134 195.927   SH246 336.632   SH358 219.747   SH470 205.499
+SH023 333.025   SH135 219.791   SH247 192.137   SH359 239.15    SH471 181.087
+SH024 204.526   SH136 303.712   SH248 217.995   SH360 292.822   SH472 204.139
+SH025 214.851   SH137 226.558   SH249 197.17    SH361 242.615   SH473 184.655
+SH026 238.148   SH138 221.994   SH250 237.781   SH362 200.037   SH474 219.691
+SH027 165.701   SH139 235.166   SH251 226.048   SH363 211.537   SH475 212.17
+SH028 231.177   SH140 242.492   SH252 195.741   SH364 258.265   SH476 200.083
+SH029 225.823   SH141 275.019   SH253 167.04    SH365 206.235   SH477 200.436
+SH030 255.078   SH142 219.568   SH254 233.627   SH366 181.459   SH478 227.56
+SH031 200.93    SH143 246.505   SH255 172.959   SH367 235.41    SH479 195.413
+SH032 195.113   SH144 188.77    SH256 224.766   SH368 318.984   SH480 215.601
+SH033 255.712   SH145 308.947   SH257 262.375   SH369 209.414   SH481 212.233
+SH034 177.741   SH146 178.424   SH258 194.524   SH370 287.368   SH482 201.521
+SH035 212.139   SH147 206.986   SH259 234.464   SH371 205.148   SH483 174.722
+SH036 236.259   SH148 235.358   SH260 226.344   SH372 194.647   SH484 306.884
+SH037 292.862   SH149 212.923   SH261 213.586   SH373 210.557   SH485 192.642
+SH038 174.778   SH150 176.774   SH262 172.297   SH374 256.243   SH486 266.42
+SH039 244.718   SH151 297.316   SH263 182.811   SH375 229.385   SH487 197.748
+SH040 187.346   SH152 220.06    SH264 259.584   SH376 247.607   SH488 283.334
+SH041 190.88    SH153 192.685   SH265 181.558   SH377 199.612   SH489 195.954
+SH042 235.358   SH154 195.803   SH266 258.481   SH378 153.496   SH490 181.071
+SH043 197.098   SH155 252.145   SH267 214.477   SH379 199.557   SH491 198.365
+SH044 208.817   SH156 294.098   SH268 302.457   SH380 326.506   SH492 192.659
+SH045 255.621   SH157 255.954   SH269 217.523   SH381 202.257   SH493 220.06
+SH046 215.365   SH158 308.197   SH270 213.872   SH382 280.447   SH494 222.371
+SH047 236.933   SH159 238.279   SH271 228.366   SH383 180.67    SH495 206.186
+SH048 205.479   SH160 298.569   SH272 234.63    SH384 180.323   SH496 245.468
+SH049 243.614   SH161 268.74    SH273 207.274   SH385 270       SH497 198.374
+SH050 181.612   SH162 234.426   SH274 235.654   SH386 257.664   SH498 194.035
+SH051 299.667   SH163 251.969   SH275 275.651   SH387 260.492   SH499 219.245
+SH052 247.877   SH164 264.819   SH276 258.993   SH388 246.238   SH500 183.736
+SH053 266.551   SH165 224.696   SH277 204.429   SH389 210.127   SH501 178.793
+SH054 282.205   SH166 219.959   SH278 213.798   SH390 233.463   SH502 341.691
+SH055 222.577   SH167 233.035   SH279 246.168   SH391 194.551   SH503 202.304
+SH056 253.417   SH168 182.71    SH280 252.646   SH392 241.004   SH504 272.126
+SH057 207.892   SH169 255.395   SH281 197.423   SH393 255.078   SH505 257.71
+SH058 201.361   SH170 217.995   SH282 220.083   SH394 185.09    SH506 220.374
+SH059 233.931   SH171 258.111   SH283 297.582   SH395 193.679   SH507 255.425
+SH060 222.302   SH172 215.87    SH284 210.393   SH396 209.627   SH508 204.284
+SH061 186.063   SH173 191.94    SH285 241.53    SH397 216.195   SH509 277.172
+SH062 204.014   SH174 280.337   SH286 183.541   SH398 230.843   SH510 311.801
+SH063 201.568   SH175 248.205   SH287 215.795   SH399 186.722   SH511 191.966
+SH064 213.936   SH176 199.483   SH288 250.58    SH400 252.336   SH512 251.192
+SH065 222.991   SH177 225.411   SH289 228.862   SH401 249.812   SH513 233.766
+SH066 180.331   SH178 204.323   SH290 203.208   SH402 251.924   SH514 168.948
+SH067 256.046   SH179 202.437   SH291 198.42    SH403 259.459   SH515 239.123
+SH068 323.984   SH180 252.395   SH292 268.323   SH404 240.427   SH516 198.393
+SH069 276.374   SH181 254.522   SH293 216.802   SH405 285.582   SH517 333.282
+SH070 210.876   SH182 315.213   SH294 249.812   SH406 222.291   SH518 237.885
+SH071 176.702   SH183 236.492   SH295 221.652   SH407 206.254   SH519 230.621
+SH072 273.176   SH184 232.959   SH296 247.041   SH408 227.788   SH520 229.751
+SH073 230.658   SH185 208.173   SH297 190.897   SH409 223.129   SH521 175.753
+SH074 209.009   SH186 223.002   SH298 233.387   SH410 192.248   SH522 257.818
+SH075 251.017   SH187 221.732   SH299 244.579   SH411 196.257   SH523 225.176
+SH076 216.324   SH188 190.091   SH300 193.687   SH412 219.412   SH524 220.633
+SH077 231.338   SH189 232.046   SH301 256.425   SH413 304.504   SH525 184.355
+SH078 192.668   SH190 223.233   SH302 237.82    SH414 238.161   SH526 260.1
+SH079 188.679   SH191 236.389   SH303 264.755   SH415 225.317   SH527 289.661
+SH080 197.847   SH192 219.97    SH304 237.467   SH416 229.446   SH528 339.223
+SH081 211.051   SH193 261.454   SH305 242.915   SH417 185.727   SH529 194.463
+SH082 201.333   SH194 240.816   SH306 282.408   SH418 195.626   SH530 246.744
+SH083 228.221   SH195 186.843   SH307 257.327   SH419 216.802   SH531 261.993
+SH084 212.871   SH196 257.403   SH308 202.361   SH420 235.448   SH532 212.494
+SH085 236.596   SH197 167.131   SH309 225.918   SH421 187.565   SH533 247.324
+SH086 306.122   SH198 236.751   SH310 238.753   SH422 261.09    SH534 200.25
+SH087 203.237   SH199 202.931   SH311 261.929   SH423 205.44    SH535 180.481
+SH088 175.296   SH200 246.533   SH312 206.274   SH424 218.292   SH536 222.566
+SH089 217.841   SH201 200.408   SH313 178.535   SH425 191.074   SH537 216.596
+SH090 183.533   SH202 206.048   SH314 184.049   SH426 217.413   SH538 253.239
+SH091 249.207   SH203 181.987   SH315 233.943   SH427 188.391   SH539 253.402
+SH092 206.068   SH204 261.977   SH316 192.978   SH428 228.029   SH540 211.537
+SH093 201.69    SH205 184.718   SH317 207.513   SH429 230.314   SH541 235.025
+SH094 187.248   SH206 222.165   SH318 224.486   SH430 196.373   SH542 213.957
+SH095 196.283   SH207 244.898   SH319 258.435   SH431 290.401   SH543 220.172
+SH096 188.952   SH208 238.674   SH320 186.079   SH432 220.769   SH544 244.704
+SH097 293.678   SH209 202.57    SH321 253.983   SH433 267.476   SH545 254.567
+SH098 218.182   SH210 191.932   SH322 218.978   SH434 223.73    SH546 202.181
+SH099 262.63    SH211 252.883   SH323 278.764   SH435 238.872   SH547 200.968
+SH100 254.822   SH212 268.306   SH324 228.065   SH436 262.822   SH548 227.704
+SH101 254.762   SH213 169.831   SH325 180.195   SH437 209.556   SH549 189.092
+SH102 228.318   SH214 210.188   SH326 183.517   SH438 228.137   SH550 306.166
+SH103 258.25    SH215 307.539   SH327 302.33    SH439 263.913   SH551 244.801
+SH104 266.848   SH216 257.91    SH328 195.228   SH440 292.03    SH552 207.742
+SH105 190.737   SH217 284.136   SH329 242.017   SH441 330.503   SH553 218.867
+SH106 215.903   SH218 292.208   SH330 241.058   SH442 215.461   SH554 234.515
+SH107 196.025   SH219 231.673   SH331 209.79    SH443 240.991   SH555 242.411
+SH108 206.926   SH220 236.842   SH332 222.749   SH444 216.846   SH556 203.352
+SH109 219.456   SH221 193.878   SH333 246.603   SH445 195.546   SH557 192.565
+SH110 223.51    SH222 217.195   SH334 157.693   SH446 246.168
+SH111 315.997   SH223 195.484   SH335 232.421   SH447 187.573
+SH112 274.687   SH224 196.766   SH336 229.336   SH448 255.093
+;
+
+(c) Binding constraints: 
+
+	maxDuration[SH001]
+	maxDuration[SH002]
+	maxDuration[SH003]
+	maxDuration[SH004]
+	maxDuration[SH005]
+	maxDuration[SH006]
+	maxDuration[SH007]
+	maxDuration[SH008]
+	maxDuration[SH009]
+	maxDuration[SH010]
+	maxDuration[SH011]
+	maxDuration[SH012]
+	maxDuration[SH013]
+	maxDuration[SH014]
+	maxDuration[SH015]
+	maxDuration[SH016]
+	maxDuration[SH017]
+	maxDuration[SH018]
+	maxDuration[SH019]
+	maxDuration[SH020]
+	maxDuration[SH021]
+	maxDuration[SH022]
+	maxDuration[SH023]
+	maxDuration[SH024]
+	maxDuration[SH025]
+	maxDuration[SH026]
+	maxDuration[SH027]
+	maxDuration[SH028]
+	maxDuration[SH029]
+	maxDuration[SH030]
+	maxDuration[SH031]
+	maxDuration[SH032]
+	maxDuration[SH033]
+	maxDuration[SH034]
+	maxDuration[SH035]
+	maxDuration[SH036]
+	maxDuration[SH037]
+	maxDuration[SH038]
+	maxDuration[SH039]
+	maxDuration[SH040]
+	maxDuration[SH041]
+	maxDuration[SH042]
+	maxDuration[SH043]
+	maxDuration[SH044]
+	maxDuration[SH045]
+	maxDuration[SH046]
+	maxDuration[SH047]
+	maxDuration[SH048]
+	maxDuration[SH049]
+	maxDuration[SH050]
+	maxDuration[SH051]
+	maxDuration[SH052]
+	maxDuration[SH053]
+	maxDuration[SH054]
+	maxDuration[SH055]
+	maxDuration[SH056]
+	maxDuration[SH057]
+	maxDuration[SH058]
+	maxDuration[SH059]
+	maxDuration[SH060]
+	maxDuration[SH061]
+	maxDuration[SH062]
+	maxDuration[SH063]
+	maxDuration[SH064]
+	maxDuration[SH065]
+	maxDuration[SH066]
+	maxDuration[SH067]
+	maxDuration[SH068]
+	maxDuration[SH069]
+	maxDuration[SH070]
+	maxDuration[SH071]
+	maxDuration[SH072]
+	maxDuration[SH073]
+	maxDuration[SH074]
+	maxDuration[SH075]
+	maxDuration[SH076]
+	maxDuration[SH077]
+	maxDuration[SH078]
+	maxDuration[SH079]
+	maxDuration[SH080]
+	maxDuration[SH081]
+	maxDuration[SH082]
+	maxDuration[SH083]
+	maxDuration[SH084]
+	maxDuration[SH085]
+	maxDuration[SH086]
+	maxDuration[SH087]
+	maxDuration[SH088]
+	maxDuration[SH089]
+	maxDuration[SH090]
+	maxDuration[SH091]
+	maxDuration[SH092]
+	maxDuration[SH093]
+	maxDuration[SH094]
+	maxDuration[SH095]
+	maxDuration[SH096]
+	maxDuration[SH097]
+	maxDuration[SH098]
+	maxDuration[SH099]
+	maxDuration[SH100]
+	maxDuration[SH101]
+	maxDuration[SH102]
+	maxDuration[SH103]
+	maxDuration[SH104]
+	maxDuration[SH105]
+	maxDuration[SH106]
+	maxDuration[SH107]
+	maxDuration[SH108]
+	maxDuration[SH109]
+	maxDuration[SH110]
+	maxDuration[SH111]
+	maxDuration[SH112]
+	maxDuration[SH113]
+	maxDuration[SH114]
+	maxDuration[SH115]
+	maxDuration[SH116]
+	maxDuration[SH117]
+	maxDuration[SH118]
+	maxDuration[SH119]
+	maxDuration[SH120]
+	maxDuration[SH121]
+	maxDuration[SH122]
+	maxDuration[SH123]
+	maxDuration[SH124]
+	maxDuration[SH125]
+	maxDuration[SH126]
+	maxDuration[SH127]
+	maxDuration[SH128]
+	maxDuration[SH129]
+	maxDuration[SH130]
+	maxDuration[SH131]
+	maxDuration[SH132]
+	maxDuration[SH133]
+	maxDuration[SH134]
+	maxDuration[SH135]
+	maxDuration[SH136]
+	maxDuration[SH137]
+	maxDuration[SH138]
+	maxDuration[SH139]
+	maxDuration[SH140]
+	maxDuration[SH141]
+	maxDuration[SH142]
+	maxDuration[SH143]
+	maxDuration[SH144]
+	maxDuration[SH145]
+	maxDuration[SH146]
+	maxDuration[SH147]
+	maxDuration[SH148]
+	maxDuration[SH149]
+	maxDuration[SH150]
+	maxDuration[SH151]
+	maxDuration[SH152]
+	maxDuration[SH153]
+	maxDuration[SH154]
+	maxDuration[SH155]
+	maxDuration[SH156]
+	maxDuration[SH157]
+	maxDuration[SH158]
+	maxDuration[SH159]
+	maxDuration[SH160]
+	maxDuration[SH161]
+	maxDuration[SH162]
+	maxDuration[SH163]
+	maxDuration[SH164]
+	maxDuration[SH165]
+	maxDuration[SH166]
+	maxDuration[SH167]
+	maxDuration[SH168]
+	maxDuration[SH169]
+	maxDuration[SH170]
+	maxDuration[SH171]
+	maxDuration[SH172]
+	maxDuration[SH173]
+	maxDuration[SH174]
+	maxDuration[SH175]
+	maxDuration[SH176]
+	maxDuration[SH177]
+	maxDuration[SH178]
+	maxDuration[SH179]
+	maxDuration[SH180]
+	maxDuration[SH181]
+	maxDuration[SH182]
+	maxDuration[SH183]
+	maxDuration[SH184]
+	maxDuration[SH185]
+	maxDuration[SH186]
+	maxDuration[SH187]
+	maxDuration[SH188]
+	maxDuration[SH189]
+	maxDuration[SH190]
+	maxDuration[SH191]
+	maxDuration[SH192]
+	maxDuration[SH193]
+	maxDuration[SH194]
+	maxDuration[SH195]
+	maxDuration[SH196]
+	maxDuration[SH197]
+	maxDuration[SH198]
+	maxDuration[SH199]
+	maxDuration[SH200]
+	maxDuration[SH201]
+	maxDuration[SH202]
+	maxDuration[SH203]
+	maxDuration[SH204]
+	maxDuration[SH205]
+	maxDuration[SH206]
+	maxDuration[SH207]
+	maxDuration[SH208]
+	maxDuration[SH209]
+	maxDuration[SH210]
+	maxDuration[SH211]
+	maxDuration[SH212]
+	maxDuration[SH213]
+	maxDuration[SH214]
+	maxDuration[SH215]
+	maxDuration[SH216]
+	maxDuration[SH217]
+	maxDuration[SH218]
+	maxDuration[SH219]
+	maxDuration[SH220]
+	maxDuration[SH221]
+	maxDuration[SH222]
+	maxDuration[SH223]
+	maxDuration[SH224]
+	maxDuration[SH225]
+	maxDuration[SH226]
+	maxDuration[SH227]
+	maxDuration[SH228]
+	maxDuration[SH229]
+	maxDuration[SH230]
+	maxDuration[SH231]
+	maxDuration[SH232]
+	maxDuration[SH233]
+	maxDuration[SH234]
+	maxDuration[SH235]
+	maxDuration[SH236]
+	maxDuration[SH237]
+	maxDuration[SH238]
+	maxDuration[SH239]
+	maxDuration[SH240]
+	maxDuration[SH241]
+	maxDuration[SH242]
+	maxDuration[SH243]
+	maxDuration[SH244]
+	maxDuration[SH245]
+	maxDuration[SH246]
+	maxDuration[SH247]
+	maxDuration[SH248]
+	maxDuration[SH249]
+	maxDuration[SH250]
+	maxDuration[SH251]
+	maxDuration[SH252]
+	maxDuration[SH253]
+	maxDuration[SH254]
+	maxDuration[SH255]
+	maxDuration[SH256]
+	maxDuration[SH257]
+	maxDuration[SH258]
+	maxDuration[SH259]
+	maxDuration[SH260]
+	maxDuration[SH261]
+	maxDuration[SH262]
+	maxDuration[SH263]
+	maxDuration[SH264]
+	maxDuration[SH265]
+	maxDuration[SH266]
+	maxDuration[SH267]
+	maxDuration[SH268]
+	maxDuration[SH269]
+	maxDuration[SH270]
+	maxDuration[SH271]
+	maxDuration[SH272]
+	maxDuration[SH273]
+	maxDuration[SH274]
+	maxDuration[SH275]
+	maxDuration[SH276]
+	maxDuration[SH277]
+	maxDuration[SH278]
+	maxDuration[SH279]
+	maxDuration[SH280]
+	maxDuration[SH281]
+	maxDuration[SH282]
+	maxDuration[SH283]
+	maxDuration[SH284]
+	maxDuration[SH285]
+	maxDuration[SH286]
+	maxDuration[SH287]
+	maxDuration[SH288]
+	maxDuration[SH289]
+	maxDuration[SH290]
+	maxDuration[SH291]
+	maxDuration[SH292]
+	maxDuration[SH293]
+	maxDuration[SH294]
+	maxDuration[SH295]
+	maxDuration[SH296]
+	maxDuration[SH297]
+	maxDuration[SH298]
+	maxDuration[SH299]
+	maxDuration[SH300]
+	maxDuration[SH301]
+	maxDuration[SH302]
+	maxDuration[SH303]
+	maxDuration[SH304]
+	maxDuration[SH305]
+	maxDuration[SH306]
+	maxDuration[SH307]
+	maxDuration[SH308]
+	maxDuration[SH309]
+	maxDuration[SH310]
+	maxDuration[SH311]
+	maxDuration[SH312]
+	maxDuration[SH313]
+	maxDuration[SH314]
+	maxDuration[SH315]
+	maxDuration[SH316]
+	maxDuration[SH317]
+	maxDuration[SH318]
+	maxDuration[SH319]
+	maxDuration[SH320]
+	maxDuration[SH321]
+	maxDuration[SH322]
+	maxDuration[SH323]
+	maxDuration[SH324]
+	maxDuration[SH325]
+	maxDuration[SH326]
+	maxDuration[SH327]
+	maxDuration[SH328]
+	maxDuration[SH329]
+	maxDuration[SH330]
+	maxDuration[SH331]
+	maxDuration[SH332]
+	maxDuration[SH333]
+	maxDuration[SH334]
+	maxDuration[SH335]
+	maxDuration[SH336]
+	maxDuration[SH337]
+	maxDuration[SH338]
+	maxDuration[SH339]
+	maxDuration[SH340]
+	maxDuration[SH341]
+	maxDuration[SH342]
+	maxDuration[SH343]
+	maxDuration[SH344]
+	maxDuration[SH345]
+	maxDuration[SH346]
+	maxDuration[SH347]
+	maxDuration[SH348]
+	maxDuration[SH349]
+	maxDuration[SH350]
+	maxDuration[SH351]
+	maxDuration[SH352]
+	maxDuration[SH353]
+	maxDuration[SH354]
+	maxDuration[SH355]
+	maxDuration[SH356]
+	maxDuration[SH357]
+	maxDuration[SH358]
+	maxDuration[SH359]
+	maxDuration[SH360]
+	maxDuration[SH361]
+	maxDuration[SH362]
+	maxDuration[SH363]
+	maxDuration[SH364]
+	maxDuration[SH365]
+	maxDuration[SH366]
+	maxDuration[SH367]
+	maxDuration[SH368]
+	maxDuration[SH369]
+	maxDuration[SH370]
+	maxDuration[SH371]
+	maxDuration[SH372]
+	maxDuration[SH373]
+	maxDuration[SH374]
+	maxDuration[SH375]
+	maxDuration[SH376]
+	maxDuration[SH377]
+	maxDuration[SH378]
+	maxDuration[SH379]
+	maxDuration[SH380]
+	maxDuration[SH381]
+	maxDuration[SH382]
+	maxDuration[SH383]
+	maxDuration[SH384]
+	maxDuration[SH385]
+	maxDuration[SH386]
+	maxDuration[SH387]
+	maxDuration[SH388]
+	maxDuration[SH389]
+	maxDuration[SH390]
+	maxDuration[SH391]
+	maxDuration[SH392]
+	maxDuration[SH393]
+	maxDuration[SH394]
+	maxDuration[SH395]
+	maxDuration[SH396]
+	maxDuration[SH397]
+	maxDuration[SH398]
+	maxDuration[SH399]
+	maxDuration[SH400]
+	maxDuration[SH401]
+	maxDuration[SH402]
+	maxDuration[SH403]
+	maxDuration[SH404]
+	maxDuration[SH405]
+	maxDuration[SH406]
+	maxDuration[SH407]
+	maxDuration[SH408]
+	maxDuration[SH409]
+	maxDuration[SH410]
+	maxDuration[SH411]
+	maxDuration[SH412]
+	maxDuration[SH413]
+	maxDuration[SH414]
+	maxDuration[SH415]
+	maxDuration[SH416]
+	maxDuration[SH417]
+	maxDuration[SH418]
+	maxDuration[SH419]
+	maxDuration[SH420]
+	maxDuration[SH421]
+	maxDuration[SH422]
+	maxDuration[SH423]
+	maxDuration[SH424]
+	maxDuration[SH425]
+	maxDuration[SH426]
+	maxDuration[SH427]
+	maxDuration[SH428]
+	maxDuration[SH429]
+	maxDuration[SH430]
+	maxDuration[SH431]
+	maxDuration[SH432]
+	maxDuration[SH433]
+	maxDuration[SH434]
+	maxDuration[SH435]
+	maxDuration[SH436]
+	maxDuration[SH437]
+	maxDuration[SH438]
+	maxDuration[SH439]
+	maxDuration[SH440]
+	maxDuration[SH441]
+	maxDuration[SH442]
+	maxDuration[SH443]
+	maxDuration[SH444]
+	maxDuration[SH445]
+	maxDuration[SH446]
+	maxDuration[SH447]
+	maxDuration[SH448]
+	maxDuration[SH449]
+	maxDuration[SH450]
+	maxDuration[SH451]
+	maxDuration[SH452]
+	maxDuration[SH453]
+	maxDuration[SH454]
+	maxDuration[SH455]
+	maxDuration[SH456]
+	maxDuration[SH457]
+	maxDuration[SH458]
+	maxDuration[SH459]
+	maxDuration[SH460]
+	maxDuration[SH461]
+	maxDuration[SH462]
+	maxDuration[SH463]
+	maxDuration[SH464]
+	maxDuration[SH465]
+	maxDuration[SH466]
+	maxDuration[SH467]
+	maxDuration[SH468]
+	maxDuration[SH469]
+	maxDuration[SH470]
+	maxDuration[SH471]
+	maxDuration[SH472]
+	maxDuration[SH473]
+	maxDuration[SH474]
+	maxDuration[SH475]
+	maxDuration[SH476]
+	maxDuration[SH477]
+	maxDuration[SH478]
+	maxDuration[SH479]
+	maxDuration[SH480]
+	maxDuration[SH481]
+	maxDuration[SH482]
+	maxDuration[SH483]
+	maxDuration[SH484]
+	maxDuration[SH485]
+	maxDuration[SH486]
+	maxDuration[SH487]
+	maxDuration[SH488]
+	maxDuration[SH489]
+	maxDuration[SH490]
+	maxDuration[SH491]
+	maxDuration[SH492]
+	maxDuration[SH493]
+	maxDuration[SH494]
+	maxDuration[SH495]
+	maxDuration[SH496]
+	maxDuration[SH497]
+	maxDuration[SH498]
+	maxDuration[SH499]
+	maxDuration[SH500]
+	maxDuration[SH501]
+	maxDuration[SH502]
+	maxDuration[SH503]
+	maxDuration[SH504]
+	maxDuration[SH505]
+	maxDuration[SH506]
+	maxDuration[SH507]
+	maxDuration[SH508]
+	maxDuration[SH509]
+	maxDuration[SH510]
+	maxDuration[SH511]
+	maxDuration[SH512]
+	maxDuration[SH513]
+	maxDuration[SH514]
+	maxDuration[SH515]
+	maxDuration[SH516]
+	maxDuration[SH517]
+	maxDuration[SH518]
+	maxDuration[SH519]
+	maxDuration[SH520]
+	maxDuration[SH521]
+	maxDuration[SH522]
+	maxDuration[SH523]
+	maxDuration[SH524]
+	maxDuration[SH525]
+	maxDuration[SH526]
+	maxDuration[SH527]
+	maxDuration[SH528]
+	maxDuration[SH529]
+	maxDuration[SH530]
+	maxDuration[SH531]
+	maxDuration[SH532]
+	maxDuration[SH533]
+	maxDuration[SH534]
+	maxDuration[SH535]
+	maxDuration[SH536]
+	maxDuration[SH537]
+	maxDuration[SH538]
+	maxDuration[SH539]
+	maxDuration[SH540]
+	maxDuration[SH541]
+	maxDuration[SH542]
+	maxDuration[SH543]
+	maxDuration[SH544]
+	maxDuration[SH545]
+	maxDuration[SH546]
+	maxDuration[SH547]
+	maxDuration[SH548]
+	maxDuration[SH549]
+	maxDuration[SH550]
+	maxDuration[SH551]
+	maxDuration[SH552]
+	maxDuration[SH553]
+	maxDuration[SH554]
+	maxDuration[SH555]
+	maxDuration[SH556]
+	maxDuration[SH557]
+(d) The slack for raw materials budget is: 
+
